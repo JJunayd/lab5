@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Табак",
+    "y": -10,
+    "x": 10,
+    "price": 100,
+    "unitOfMeasure": "GRAMS",
+    "orgName": "Компания",
+    "employeesCount": 4,
+    "type": "PRIVATE_LIMITED_COMPANY",
+    "street": "Paper st.",
+    "zipCode": 24516143
+  },
+  {
+    "name": "Коньяк",
+    "x": 30,
+    "y": 46,
+    "price": 450,
+    "unitOfMeasure": "LITERS",
+    "orgName": "Компания",
+    "employeesCount": 23,
+    "type": "PRIVATE_LIMITED_COMPANY",
+    "street": "Paper st.",
+    "zipCode": 24516143
+  }
+  ]
+
