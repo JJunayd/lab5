@@ -1,7 +1,7 @@
 package commands;
 
 
-public class ExecuteScriptCommand implements Executable {
+public class ExecuteScriptCommand implements ArgCommand {
     private final CommandExecuter comEx;
     public ExecuteScriptCommand(CommandExecuter comEx){
         this.comEx = comEx;
@@ -10,11 +10,9 @@ public class ExecuteScriptCommand implements Executable {
     public void setFileName(String fileName){
         this.fileName = fileName;
     }
-    public String getFileName(){
-        return this.fileName;
-    }
     @Override
-    public void execute() {
+    public void execute(String arg) {
+        setFileName(arg);
         comEx.exScript(fileName);
     }
 }

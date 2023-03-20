@@ -38,7 +38,7 @@ public class CommandExecuter {
                             }
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        System.out.println("Не удалось прочитать файл");
                     }
                     if (thrown) {
                         break;
@@ -47,18 +47,18 @@ public class CommandExecuter {
             }
             scanner.close();
         }catch(IOException e) {
-            e.printStackTrace();
+            System.out.println("Не удалось прочитать файл");
         }
             return thrown;
     }
     public void add(Product product) {
-        if (product.isValid()) {
+        if(product.isValid) {
             CollectionManager.add(product);
         }
     }
 
     public void addIfMin(Product product) {
-        if (product.isValid()) {
+        if (product.isValid) {
             if (product.compareTo(CollectionManager.head()) < 0) {
                 CollectionManager.add(product);
             }
@@ -84,7 +84,7 @@ public class CommandExecuter {
                 scriptRegister.run();
             }
             catch(IOException e){
-                e.printStackTrace();
+                System.out.println("Не удалось прочитать файл");
             }
         }
     }
@@ -160,7 +160,7 @@ public class CommandExecuter {
         }
     }
     public void removeLower(Product product) {
-        if(product.isValid()){
+        if(product.isValid){
             ArrayList<Product> temp = new ArrayList<>();
             Iterator<Product> iter = CollectionManager.prodIter();
             while (iter.hasNext()) {
@@ -189,7 +189,7 @@ public class CommandExecuter {
                 writer.write(gson.toJson(arr));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Не удалось осуществить запись в файл");
         }
     }
     public void show() {
@@ -204,7 +204,7 @@ public class CommandExecuter {
         System.out.println("Сумма цен всех продуктов коллекции: " + sum_of_price);
     }
     public void updateId(Product product) {
-        if(product.isValid()) {
+        if(product.isValid) {
             Iterator<Product> iter = CollectionManager.prodIter();
             while (iter.hasNext()) {
                 Product nextProduct = iter.next();

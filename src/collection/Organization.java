@@ -1,6 +1,7 @@
 package collection;
 
-import java.util.Random;
+import productValidation.InvalidFieldHandler;
+
 public class Organization {
     private Long orgId; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String orgName; //Поле не может быть null, Строка не может быть пустой
@@ -8,20 +9,26 @@ public class Organization {
     private OrganizationType type; //Поле может быть null
     private Address officialAddress; //Поле может быть null
 
-    public Organization() {
-        this.updateId();
+    public Organization(String orgName, long employeesCount, OrganizationType type, Address officialAddress) {
+        updateId();
+        setName(orgName);
+        setEmployeesCount(employeesCount);
+        setType(type);
+        setOfficialAddress(officialAddress);
     }
 
     public void updateId() {
-        Random random = new Random();
-        this.orgId = random.nextLong(Long.MAX_VALUE) + 1;
+        this.setOrgId(this.orgId + 1);
     }
 
     public Long getId() {
         return orgId;
     }
     public void setOrgId(long orgId){
-        this.orgId = orgId;
+        if(orgId <= 0){
+            InvalidFieldHandler.printMessage("Значение id класса Organisation должно быть больше нуля");
+        }
+        else{this.orgId = orgId;}
     }
 
     public String getName() {
@@ -29,7 +36,10 @@ public class Organization {
     }
 
     public void setName(String name) {
-        this.orgName = name;
+        if(name == null || name.equals("")){
+            InvalidFieldHandler.printMessage("Значение name класса Organisation не может быть равно пустым(null)");
+        }
+        else{this.orgName = name;}
     }
 
     public long getEmployeesCount() {
@@ -37,7 +47,10 @@ public class Organization {
     }
 
     public void setEmployeesCount(long employeesCount) {
-        this.employeesCount = employeesCount;
+        if(employeesCount <= 0){
+            InvalidFieldHandler.printMessage("Значение employeesCount класса Organization должно быть больше нуля");
+        }
+        else{this.employeesCount = employeesCount;}
     }
 
     public OrganizationType getType() {

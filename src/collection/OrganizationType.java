@@ -1,9 +1,18 @@
 package collection;
 
 public enum OrganizationType {
-    PUBLIC,
-    GOVERNMENT,
-    TRUST,
-    PRIVATE_LIMITED_COMPANY,
-    OPEN_JOINT_STOCK_COMPANY
+    PUBLIC("public"),
+    GOVERNMENT("government"),
+    TRUST("trust"),
+    PRIVATE_LIMITED_COMPANY("private limited company"),
+    OPEN_JOINT_STOCK_COMPANY("open joint stock company");
+    private final String name;
+
+    OrganizationType(String name) {
+        this.name = name;
+    }
+
+    public String toString(){
+        return this.name;
+    }
 }

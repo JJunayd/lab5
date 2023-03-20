@@ -1,9 +1,18 @@
 package collection;
 
 public enum UnitOfMeasure {
-    CENTIMETERS,
-    PCS,
-    LITERS,
-    MILLILITERS,
-    GRAMS
+    CENTIMETERS("centimeters"),
+    PCS("pcs"),
+    LITERS("liters"),
+    MILLILITERS("milliliters"),
+    GRAMS("grams");
+    private final String name;
+
+    UnitOfMeasure(String name) {
+        this.name = name;
+    }
+
+    public String toString(){
+        return this.name;
+    }
 }

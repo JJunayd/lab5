@@ -36,12 +36,10 @@ public class Parser {
                 product.updateId();
                 product.updateOrgId();
                 product.setCreationDate(ZonedDateTime.now());
-                if(product.isValid()) {
-                    CollectionManager.add(product);
-                }
+                CollectionManager.add(product);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Не удалось прочитать файл");
         }
         catch(JsonSyntaxException e){
             System.out.println("Некорректный формат файла");

@@ -1,66 +1,51 @@
 package commands.registry;
-import com.google.gson.JsonSyntaxException;
 import commands.*;
 
 import java.util.HashMap;
 import java.util.Scanner;
-import java.util.regex.Pattern;
 
 public abstract class CommandRegister {
     Scanner scanner;
     String command;
-    AddCommand add;
-    AddIfMinCommand addIfMin;
-    ClearCommand clear;
-    ExecuteScriptCommand exScript;
-    ExitCommand exit;
-    FGTPCommand filterPrice;
-    HeadCommand head;
-    HelpCommand help;
-    InfoCommand info;
-    PrintDescendingCommand printDescending;
-    RemoveByIdCommand removeById;
-    RemoveLowerCommand removeLower;
-    SaveCommand save;
-    ShowCommand show;
-    SumOfPriceCommand sumOfPrice;
-    UpdateIdCommand updateId;
     CommandExecuter comEx;
-    HashMap<String, Executable> commandMap = new HashMap<>();
+    HashMap<String, Executable> noArgCommandMap = new HashMap<>();
+    HashMap<String, ArgCommand> argCommandMap = new HashMap<>();
+    final static int COMMAND_INDEX = 2;
     public CommandRegister(CommandExecuter comEx){
         this.comEx = comEx;
-        add = new AddCommand(comEx);
-        addIfMin = new AddIfMinCommand(comEx);
-        clear = new ClearCommand(comEx);
-        exScript = new ExecuteScriptCommand(comEx);
-        exit = new ExitCommand(comEx);
-        filterPrice = new FGTPCommand(comEx);
-        head = new HeadCommand(comEx);
-        help = new HelpCommand(comEx);
-        info = new InfoCommand(comEx);
-        printDescending = new PrintDescendingCommand(comEx);
-        removeById = new RemoveByIdCommand(comEx);
-        removeLower = new RemoveLowerCommand(comEx);
-        save = new SaveCommand(comEx);
-        show = new ShowCommand(comEx);
-        sumOfPrice = new SumOfPriceCommand(comEx);
-        updateId = new UpdateIdCommand(comEx);
-        commandMap.put("help", help);
-        commandMap.put("info", info);
-        commandMap.put("show", show);
-        commandMap.put("add", add);
-        commandMap.put("update id", updateId);
-        commandMap.put("remove_by_id", removeById);
-        commandMap.put("clear", clear);
-        commandMap.put("save", save);
-        commandMap.put("execute_script", exScript);
-        commandMap.put("exit", exit);
-        commandMap.put("head", head);
-        commandMap.put("add_if_min", addIfMin);
-        commandMap.put("remove_lower", removeLower);
-        commandMap.put("sum_of_price", sumOfPrice);
-        commandMap.put("filter_greater_than_price", filterPrice);
-        commandMap.put("print_descending", printDescending);
+        var add = new AddCommand(comEx);
+        var addIfMin = new AddIfMinCommand(comEx);
+        var clear = new ClearCommand(comEx);
+        var exScript = new ExecuteScriptCommand(comEx);
+        var exit = new ExitCommand(comEx);
+        var filterPrice = new FGTPCommand(comEx);
+        var head = new HeadCommand(comEx);
+        var help = new HelpCommand(comEx);
+        var info = new InfoCommand(comEx);
+        var printDescending = new PrintDescendingCommand(comEx);
+        var removeById = new RemoveByIdCommand(comEx);
+        var removeLower = new RemoveLowerCommand(comEx);
+        var save = new SaveCommand(comEx);
+        var show = new ShowCommand(comEx);
+        var sumOfPrice = new SumOfPriceCommand(comEx);
+        var updateId = new UpdateIdCommand(comEx);
+        noArgCommandMap.put("help", help);
+        noArgCommandMap.put("info", info);
+        noArgCommandMap.put("show", show);
+        noArgCommandMap.put("clear", clear);
+        noArgCommandMap.put("save", save);
+        noArgCommandMap.put("exit", exit);
+        noArgCommandMap.put("head", head);
+        noArgCommandMap.put("sum_of_price", sumOfPrice);
+        noArgCommandMap.put("print_descending", printDescending);
+
+        argCommandMap.put("add", add);
+        argCommandMap.put("update_id", updateId);
+        argCommandMap.put("remove_by_id", removeById);
+        argCommandMap.put("execute_script", exScript);
+        argCommandMap.put("add_if_min", addIfMin);
+        argCommandMap.put("remove_lower", removeLower);
+        argCommandMap.put("filter_greater_than_price", filterPrice);
     }
     public void printCommandNotFound(){
         System.out.println("Команда не опознана. Введите help, чтобы вывести справку по доступным командам");
@@ -68,97 +53,21 @@ public abstract class CommandRegister {
     public void run() {
         while (this.scanner.hasNextLine()) {
             command = this.scanner.nextLine().trim();
-            if (Pattern.matches("update id .+", command)) { //неудобная команда..
-                try {
-                    String jsonProduct = command.replace("update id ", "").strip();
-                    updateId.setJsonProduct(jsonProduct);
-                    updateId.execute();
-                } catch (JsonSyntaxException e) {
-                    System.out.println("Ошибка в описании продукта в формате json");
+                String[] comSplit = command.split("\\s+", COMMAND_INDEX);
+                String method = comSplit[0];
+                String argument = comSplit[1].strip();
+                if (noArgCommandMap.containsKey(method)) {
+                    noArgCommandMap.get(method).execute();
                 }
-            }
-            else {
-                String[] comSplit = command.split("\\s+", 2);
-                if (commandMap.containsKey(comSplit[0])) {
-                    if (comSplit.length == 1) {
-                        switch (comSplit[0]) {
-                            case ("help"):
-                            case ("info"):
-                            case ("show"):
-                            case ("clear"):
-                            case ("save"):
-                            case ("exit"):
-                            case ("head"):
-                            case ("sum_of_price"):
-                            case ("print_descending"):
-                                commandMap.get(comSplit[0]).execute();
-                                break;
-                            default: printCommandNotFound();
-                        }
-                    } else {
-                        switch (comSplit[0]) {
-                            case ("add"):
-                                try {
-                                    String jsonProduct = comSplit[1].strip();
-                                    add.setJsonProduct(jsonProduct);
-                                    add.execute();
-                                } catch (JsonSyntaxException e) {
-                                    System.out.println("Ошибка в описании продукта в формате json");
-                                }
-                                break;
-                            case ("add_if_min"):
-                                try {
-                                    String jsonProduct = comSplit[1].strip();
-                                    addIfMin.setJsonProduct(jsonProduct);
-                                    addIfMin.execute();
-                                } catch (JsonSyntaxException e) {
-                                    System.out.println("Ошибка в описании продукта в формате json");
-                                }
-                                break;
-                            case ("remove_lower"):
-                                try {
-                                    String jsonProduct = comSplit[1].strip();
-                                    removeLower.setJsonProduct(jsonProduct);
-                                    removeLower.execute();
-                                } catch (JsonSyntaxException e) {
-                                    System.out.println("Ошибка в описании продукта в формате json");
-                                }
-                                break;
-                            case ("remove_by_id"):
-                                try {
-                                    long id = Long.parseLong(comSplit[1]);
-                                    removeById.setId(id);
-                                    removeById.execute();
-                                } catch (NumberFormatException e) {
-                                    System.out.println("Значение id должно быть числом, не превышающим 9,223,372,036,854,775,807");
-                                }
-                                break;
-                            case ("execute_script"):
-                                exScript.setFileName(comSplit[1]);
-                                exScript.execute();
-                                break;
-                            case ("filter_greater_than_price"):
-                                try {
-                                    long price = Long.parseLong(comSplit[1]);
-                                    filterPrice.setPrice(price);
-                                    filterPrice.execute();
-                                } catch (NumberFormatException e) {
-                                    System.out.println("Значение price должно быть числом, не превышающим 9,223,372,036,854,775,807");
-                                }
-                                break;
-                        }
-                    }
+                else if(argCommandMap.containsKey(method)) {
+                    argCommandMap.get(method).execute(argument);
                 }
                 else {
                     printCommandNotFound();
                     }
                 }
             }
-        }
         public void setScanner(Scanner scanner){
             this.scanner = scanner;
-        }
-        public Scanner getScanner() {
-            return this.scanner;
         }
 }

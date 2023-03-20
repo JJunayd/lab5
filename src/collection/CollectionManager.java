@@ -30,7 +30,7 @@ public class CollectionManager {
             product.updateId();
         }
         while(usedOrgIds.contains(product.getManufacturer().getId())){
-            product.getManufacturer().updateId();
+            product.updateOrgId();
         }
         collection.add(product);
         usedIds.add(product.getId());

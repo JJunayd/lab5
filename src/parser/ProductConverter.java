@@ -32,58 +32,50 @@ public class ProductConverter implements JsonSerializer<Product>, JsonDeserializ
                               JsonDeserializationContext context) throws JsonParseException {
         JsonObject object = json.getAsJsonObject();
 
-        Address addr = new Address();
+        String street = object.get("street").getAsString();
+        String zipCode = object.get("zipCode").getAsString();
 
-        addr.setStreet(object.get("street").getAsString());
-        addr.setZipCode(object.get("zipCode").getAsString());
+        Address addr = new Address(street, zipCode);
 
-        Organization man = new Organization();
-
-        try {
-            man.setOrgId(object.get("orgId").getAsLong());
-        }
-        catch(NullPointerException e){
-            man.setOrgId(0);
-        }
-        man.setName(object.get("orgName").getAsString());
-        man.setEmployeesCount(object.get("employeesCount").getAsLong());
+        long orgId = object.get("orgId").getAsLong();
+        String orgName = object.get("orgName").getAsString();
+        long employeesCount = object.get("employeesCount").getAsLong();
+        OrganizationType type = null;
         try{
-            man.setType(OrganizationType.valueOf(object.get("type").getAsString()));
+            type = OrganizationType.valueOf(object.get("type").getAsString());
         }
         catch(IllegalArgumentException e){
             System.out.println("Некорректное значение type");
         }
-        man.setOfficialAddress(addr);
+        Organization man = new Organization(orgName, employeesCount, type, addr);
+        man.setOrgId(orgId);
 
-        Coordinates coord = new Coordinates();
+        float x = object.get("x").getAsFloat();
+        int y = object.get("y").getAsInt();
 
-        coord.setX(object.get("x").getAsFloat());
-        coord.setY(object.get("y").getAsInt());
+        Coordinates coord = new Coordinates(x, y);
 
-        Product product = new Product();
+        long id = object.get("id").getAsLong();
+        String name = object.get("name").getAsString();
 
+        ZonedDateTime creationDate;
         try {
-            product.setId(object.get("id").getAsLong());
+            creationDate = ZonedDateTime.parse(object.get("creationTime").getAsString());
         }
         catch(NullPointerException e){
-            product.setId(0);
+            creationDate = ZonedDateTime.now();
         }
-        product.setName(object.get("name").getAsString());
+        long price = object.get("price").getAsLong();
+        UnitOfMeasure unitOfMeasure = null;
         try {
-            product.setCreationDate(ZonedDateTime.parse(object.get("creationTime").getAsString()));
-        }
-        catch(NullPointerException e){
-            product.setCreationDate(ZonedDateTime.now());
-        }
-        product.setPrice(object.get("price").getAsLong());
-        try {
-            product.setUnitOfMeasure(UnitOfMeasure.valueOf(object.get("unitOfMeasure").getAsString()));
+            unitOfMeasure = UnitOfMeasure.valueOf(object.get("unitOfMeasure").getAsString());
         }
         catch(IllegalArgumentException e){
             System.out.println("Некорректное значение unitOfMeasure");
         }
-        product.setCoordinates(coord);
-        product.setManufacturer(man);
+
+        Product product = new Product(name, coord, creationDate, price, unitOfMeasure, man);
+        product.setId(id);
 
         return product;
     }
