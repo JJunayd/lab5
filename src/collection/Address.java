@@ -1,3 +1,8 @@
+/**
+ * Адрес
+ * Поле street не может быть null
+ * Длина строки zipCode не должна быть больше 18, Поле не может быть null
+ */
 package collection;
 
 import productValidation.InvalidFieldHandler;

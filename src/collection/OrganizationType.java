@@ -1,3 +1,6 @@
+/**
+ * Тип организации (public, government, trust, private limited company, open joint company)
+ */
 package collection;
 
 public enum OrganizationType {

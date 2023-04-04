@@ -1,3 +1,6 @@
+/**
+ * Единица измерения (centimeters, pcs, liters, milliliters, grams)
+ */
 package collection;
 
 public enum UnitOfMeasure {

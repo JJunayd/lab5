@@ -1,3 +1,6 @@
+/**
+ * Исключение рекурсии при исполнении скрипта
+ */
 package exceptions;
 
 public class ScriptRecursionException extends Exception{

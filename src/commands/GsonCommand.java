@@ -1,3 +1,6 @@
+/**
+ * Абстрактный класс для команд, принимающих json строки в качестве аргумента
+ */
 package commands;
 
 import collection.Product;

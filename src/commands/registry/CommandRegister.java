@@ -1,3 +1,6 @@
+/**
+ * Абстрактный класс, читающий и исполняющий команды
+ */
 package commands.registry;
 import commands.*;
 
@@ -7,45 +10,27 @@ import java.util.Scanner;
 public abstract class CommandRegister {
     Scanner scanner;
     String command;
-    CommandExecuter comEx;
-    HashMap<String, Executable> noArgCommandMap = new HashMap<>();
+    HashMap<String, NoArgCommand> noArgCommandMap = new HashMap<>();
     HashMap<String, ArgCommand> argCommandMap = new HashMap<>();
     final static int COMMAND_INDEX = 2;
-    public CommandRegister(CommandExecuter comEx){
-        this.comEx = comEx;
-        var add = new AddCommand(comEx);
-        var addIfMin = new AddIfMinCommand(comEx);
-        var clear = new ClearCommand(comEx);
-        var exScript = new ExecuteScriptCommand(comEx);
-        var exit = new ExitCommand(comEx);
-        var filterPrice = new FGTPCommand(comEx);
-        var head = new HeadCommand(comEx);
-        var help = new HelpCommand(comEx);
-        var info = new InfoCommand(comEx);
-        var printDescending = new PrintDescendingCommand(comEx);
-        var removeById = new RemoveByIdCommand(comEx);
-        var removeLower = new RemoveLowerCommand(comEx);
-        var save = new SaveCommand(comEx);
-        var show = new ShowCommand(comEx);
-        var sumOfPrice = new SumOfPriceCommand(comEx);
-        var updateId = new UpdateIdCommand(comEx);
-        noArgCommandMap.put("help", help);
-        noArgCommandMap.put("info", info);
-        noArgCommandMap.put("show", show);
-        noArgCommandMap.put("clear", clear);
-        noArgCommandMap.put("save", save);
-        noArgCommandMap.put("exit", exit);
-        noArgCommandMap.put("head", head);
-        noArgCommandMap.put("sum_of_price", sumOfPrice);
-        noArgCommandMap.put("print_descending", printDescending);
+    public CommandRegister(){
+        noArgCommandMap.put("help", new HelpCommand());
+        noArgCommandMap.put("info", new InfoCommand());
+        noArgCommandMap.put("show", new ShowCommand());
+        noArgCommandMap.put("clear", new ClearCommand());
+        noArgCommandMap.put("save", new SaveCommand());
+        noArgCommandMap.put("exit", new ExitCommand());
+        noArgCommandMap.put("head", new HeadCommand());
+        noArgCommandMap.put("sum_of_price", new SumOfPriceCommand());
+        noArgCommandMap.put("print_descending", new PrintDescendingCommand());
 
-        argCommandMap.put("add", add);
-        argCommandMap.put("update_id", updateId);
-        argCommandMap.put("remove_by_id", removeById);
-        argCommandMap.put("execute_script", exScript);
-        argCommandMap.put("add_if_min", addIfMin);
-        argCommandMap.put("remove_lower", removeLower);
-        argCommandMap.put("filter_greater_than_price", filterPrice);
+        argCommandMap.put("add", new AddCommand());
+        argCommandMap.put("update_id", new UpdateIdCommand());
+        argCommandMap.put("remove_by_id", new RemoveByIdCommand());
+        argCommandMap.put("execute_script", new ExecuteScriptCommand());
+        argCommandMap.put("add_if_min", new AddIfMinCommand());
+        argCommandMap.put("remove_lower", new RemoveLowerCommand());
+        argCommandMap.put("filter_greater_than_price", new FGTPCommand());
     }
     public void printCommandNotFound(){
         System.out.println("Команда не опознана. Введите help, чтобы вывести справку по доступным командам");
@@ -55,11 +40,11 @@ public abstract class CommandRegister {
             command = this.scanner.nextLine().trim();
                 String[] comSplit = command.split("\\s+", COMMAND_INDEX);
                 String method = comSplit[0];
-                String argument = comSplit[1].strip();
                 if (noArgCommandMap.containsKey(method)) {
                     noArgCommandMap.get(method).execute();
                 }
                 else if(argCommandMap.containsKey(method)) {
+                    String argument = comSplit[1].strip();
                     argCommandMap.get(method).execute(argument);
                 }
                 else {

@@ -1,14 +1,17 @@
+/**
+ * Команда, выводящая информацию о коллекции
+ */
 package commands;
 
 
-public class InfoCommand implements Executable{
-    private final CommandExecuter comEx;
-    public InfoCommand(CommandExecuter comEx){
-        this.comEx = comEx;
-    }
+import collection.CollectionManager;
+
+public class InfoCommand implements NoArgCommand {
     @Override
     public void execute() {
-        comEx.info();
+        System.out.println("Тип коллекции: " + CollectionManager.getCollectionType());
+        System.out.println("Дата инициализации: " + CollectionManager.getCreationTime());
+        System.out.println("Число элементов коллекции: " + CollectionManager.getCollectionSize());
     }
 }
 

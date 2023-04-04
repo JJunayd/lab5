@@ -1,14 +1,14 @@
+/**
+ * Команда, выводящая первый элемент коллекции
+ */
 package commands;
 
 
+import collection.CollectionManager;
 
-public class HeadCommand implements Executable{
-    private final CommandExecuter comEx;
-    public HeadCommand(CommandExecuter comEx){
-        this.comEx = comEx;
-    }
+public class HeadCommand implements NoArgCommand {
     @Override
     public void execute() {
-        comEx.head();
+        System.out.println(CollectionManager.head());
     }
 }

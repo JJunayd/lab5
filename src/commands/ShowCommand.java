@@ -1,11 +1,13 @@
+/**
+ * Команда, выводящая элементы коллекции в строковом представлении
+ */
 package commands;
-public class ShowCommand implements Executable{
-    private final CommandExecuter comEx;
-    public ShowCommand(CommandExecuter comEx){
-        this.comEx = comEx;
-    }
+
+import collection.CollectionManager;
+
+public class ShowCommand implements NoArgCommand {
     @Override
     public void execute() {
-        comEx.show();
+        System.out.println(CollectionManager.show().toString());
     }
 }

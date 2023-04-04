@@ -1,3 +1,8 @@
+/**
+ * Координаты
+ * Максимальное значение поля х: 570, Поле не может быть null
+ * Поле y не может быть null
+ */
 package collection;
 import productValidation.InvalidFieldHandler;
 

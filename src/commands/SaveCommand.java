@@ -1,11 +1,15 @@
+/**
+ * Команда, сохраняющая коллекцию в файл
+ */
 package commands;
+import collection.CollectionManager;
 import exceptions.PathNotSetException;
 
-public class SaveCommand extends GsonCommand implements Executable{
-    private final CommandExecuter comEx;
-    public SaveCommand(CommandExecuter comEx){
-        this.comEx = comEx;
-    }
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class SaveCommand extends GsonCommand implements NoArgCommand {
     private static String saveToPath;
     static{
         try{
@@ -20,6 +24,18 @@ public class SaveCommand extends GsonCommand implements Executable{
     }
     @Override
     public void execute() {
-        comEx.save(saveToPath, gson);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(saveToPath))) {
+            Object[] arr = CollectionManager.toArray();
+            if(arr.length == 0){
+                writer.write("");
+            }
+            else if (arr.length == 1) {
+                writer.write(gson.toJson(arr[0]));
+            } else {
+                writer.write(gson.toJson(arr));
+            }
+        } catch (IOException e) {
+            System.out.println("Не удалось осуществить запись в файл");
+        }
     }
 }

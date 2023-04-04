@@ -1,13 +1,21 @@
+/**
+ * Команда, выводящая элементы коллекции в порядке убывания
+ */
 package commands;
 
 
-public class PrintDescendingCommand implements Executable{
-    private final CommandExecuter comEx;
-    public PrintDescendingCommand(CommandExecuter comEx){
-        this.comEx = comEx;
-    }
+import collection.CollectionManager;
+
+public class PrintDescendingCommand implements NoArgCommand {
     @Override
     public void execute() {
-        comEx.printDescending();
+        Object[] arr = CollectionManager.toArray();
+        for (int i = arr.length - 1; i >= 0; i--) {
+            System.out.print(arr[i]);
+            if (i != 0) {
+                System.out.print(", ");
+            }
+        }
+        System.out.println();
     }
 }

@@ -1,3 +1,11 @@
+/**
+ * Организация
+ * Поле orgId не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+ * Поле orgName не может быть null, Строка не может быть пустой
+ * Значение поля employeesCount должно быть больше 0
+ * Поле type может быть null
+ * Поле может officialAddress быть null
+ */
 package collection;
 
 import productValidation.InvalidFieldHandler;
@@ -10,15 +18,20 @@ public class Organization {
     private Address officialAddress; //Поле может быть null
 
     public Organization(String orgName, long employeesCount, OrganizationType type, Address officialAddress) {
-        updateId();
-        setName(orgName);
-        setEmployeesCount(employeesCount);
-        setType(type);
-        setOfficialAddress(officialAddress);
+            updateId();
+            setName(orgName);
+            setEmployeesCount(employeesCount);
+            setType(type);
+            setOfficialAddress(officialAddress);
     }
 
     public void updateId() {
-        this.setOrgId(this.orgId + 1);
+        if(this.orgId == null){
+            this.setOrgId(1);
+        }
+        else {
+            this.setOrgId(this.orgId + 1);
+        }
     }
 
     public Long getId() {

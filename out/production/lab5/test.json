@@ -5,23 +5,23 @@
     "x": 10,
     "price": 100,
     "unitOfMeasure": "GRAMS",
-    "orgName": "Компания",
+    "orgName": "Фирма",
     "employeesCount": 4,
     "type": "PRIVATE_LIMITED_COMPANY",
     "street": "Paper st.",
-    "zipCode": 24516143
+    "zipCode": 24516
   },
   {
-    "name": "Коньяк",
+    "name": "Апельсиновый сок",
     "x": 30,
     "y": 46,
-    "price": 450,
+    "price": 78,
     "unitOfMeasure": "LITERS",
-    "orgName": "Компания",
+    "orgName": "Фирма",
     "employeesCount": 23,
     "type": "PRIVATE_LIMITED_COMPANY",
-    "street": "Paper st.",
-    "zipCode": 24516143
+    "street": "Istiglaliyyat st.",
+    "zipCode": 342314
   }
   ]
 

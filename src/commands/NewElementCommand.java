@@ -1,7 +1,9 @@
+/**
+ * Абстрактный класс для команд, создающих новые элементы
+ */
 package commands;
 
 import collection.Product;
-import com.google.gson.JsonSyntaxException;
 
 
 import java.time.ZonedDateTime;

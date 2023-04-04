@@ -1,3 +1,6 @@
+/**
+ * Класс, выводящий информацию о выброшенном исключении, связанном с нарушением контрактов классов коллекции
+ */
 package productValidation;
 
 import exceptions.InvalidFieldException;

@@ -1,3 +1,6 @@
+/**
+ * Класс, работающий с коллекцией
+ */
 package collection;
 
 import java.time.ZonedDateTime;

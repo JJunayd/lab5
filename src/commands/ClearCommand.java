@@ -1,11 +1,13 @@
+/**
+ * Команда, очищающая коллекцию
+ */
 package commands;
-public class ClearCommand implements Executable {
-    private final CommandExecuter comEx;
-    public ClearCommand(CommandExecuter comEx){
-        this.comEx = comEx;
-    }
+
+import collection.CollectionManager;
+
+public class ClearCommand implements NoArgCommand {
     @Override
     public void execute() {
-        comEx.clear();
+        CollectionManager.clear();
     }
 }

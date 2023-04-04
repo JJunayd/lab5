@@ -1,3 +1,6 @@
+/**
+ * Класс, преобразующий элементы коллекции в объекты JsonObject и наоборот
+ */
 package parser;
 
 import collection.*;
@@ -27,19 +30,42 @@ public class ProductConverter implements JsonSerializer<Product>, JsonDeserializ
         jsonProduct.addProperty("zipCode", product.getManufacturer().getOfficialAddress().getZipCode());
         return jsonProduct;
     }
+    public String getAsOptString(JsonObject object, String memberName){
+        if(object.get(memberName) == null){
+            return null;
+        }
+        else{return object.get(memberName).getAsString();}
+    }
+    public Long getAsOptLong(JsonObject object, String memberName){
+        if(object.get(memberName) == null){
+            return 0L;
+        }
+        else{return object.get(memberName).getAsLong();}
+    }
+    public Float getAsOptFloat(JsonObject object, String memberName){
+        if(object.get(memberName) == null){
+            return 0F;
+        }
+        else{return object.get(memberName).getAsFloat();}
+    }
+    public Integer getAsOptInt(JsonObject object, String memberName){
+        if(object.get(memberName) == null){
+            return 0;
+        }
+        else{return object.get(memberName).getAsInt();}
+    }
 
     public Product deserialize(JsonElement json, Type typeOfT,
                               JsonDeserializationContext context) throws JsonParseException {
         JsonObject object = json.getAsJsonObject();
 
-        String street = object.get("street").getAsString();
-        String zipCode = object.get("zipCode").getAsString();
+        String street = getAsOptString(object, "street");
+        String zipCode = getAsOptString(object, "zipCode");
 
         Address addr = new Address(street, zipCode);
 
-        long orgId = object.get("orgId").getAsLong();
-        String orgName = object.get("orgName").getAsString();
-        long employeesCount = object.get("employeesCount").getAsLong();
+        String orgName = getAsOptString(object, "orgName");
+        long employeesCount = getAsOptLong(object, "employeesCount");
         OrganizationType type = null;
         try{
             type = OrganizationType.valueOf(object.get("type").getAsString());
@@ -47,16 +73,19 @@ public class ProductConverter implements JsonSerializer<Product>, JsonDeserializ
         catch(IllegalArgumentException e){
             System.out.println("Некорректное значение type");
         }
-        Organization man = new Organization(orgName, employeesCount, type, addr);
-        man.setOrgId(orgId);
 
-        float x = object.get("x").getAsFloat();
-        int y = object.get("y").getAsInt();
+        Organization man = new Organization(orgName, employeesCount, type, addr);
+        if(object.get("orgId") != null) {
+            long orgId = object.get("orgId").getAsLong();
+            man.setOrgId(orgId);
+        }
+
+        float x = getAsOptFloat(object,"x");
+        int y = getAsOptInt(object, "y");
 
         Coordinates coord = new Coordinates(x, y);
 
-        long id = object.get("id").getAsLong();
-        String name = object.get("name").getAsString();
+        String name = getAsOptString(object, "name");
 
         ZonedDateTime creationDate;
         try {
@@ -65,17 +94,21 @@ public class ProductConverter implements JsonSerializer<Product>, JsonDeserializ
         catch(NullPointerException e){
             creationDate = ZonedDateTime.now();
         }
-        long price = object.get("price").getAsLong();
+        long price = getAsOptLong(object, "price");
         UnitOfMeasure unitOfMeasure = null;
         try {
-            unitOfMeasure = UnitOfMeasure.valueOf(object.get("unitOfMeasure").getAsString());
+            unitOfMeasure = UnitOfMeasure.valueOf(getAsOptString(object, "unitOfMeasure"));
         }
         catch(IllegalArgumentException e){
             System.out.println("Некорректное значение unitOfMeasure");
         }
-
+        catch(NullPointerException e){ //потому что может быть null
+            }
         Product product = new Product(name, coord, creationDate, price, unitOfMeasure, man);
-        product.setId(id);
+        if(object.get("id") != null) {
+            long id = object.get("id").getAsLong();
+            product.setId(id);
+        }
 
         return product;
     }

@@ -1,10 +1,20 @@
+/**
+ * Продукт
+ * Значение поля id должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+ * Поле name не может быть null, Строка не может быть пустой
+ * Поле coordinates не может быть null
+ * Поле creationDate не может быть null, Значение этого поля должно генерироваться автоматически
+ * Значение поля price должно быть больше 0
+ * Поле unitOfMeasure может быть null
+ * Поле manufacturer может быть null
+ */
 package collection;
 import com.google.gson.*;
 import parser.ProductConverter;
 import productValidation.InvalidFieldHandler;
 import java.time.ZonedDateTime;
 public class Product implements Comparable<Product> {
-    private long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
+    private Long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
     private ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
@@ -23,7 +33,12 @@ public class Product implements Comparable<Product> {
         setManufacturer(manufacturer);
     }
     public void updateId() {
-        setId(this.id + 1);
+        if(this.id == null){
+            this.setId(1);
+        }
+        else {
+            setId(this.id + 1);
+        }
     }
     public void updateOrgId(){
         this.getManufacturer().updateId();
@@ -58,7 +73,7 @@ public class Product implements Comparable<Product> {
         return this.name;
     }
     public void setName(String name) {
-        if(this.getName() == null || this.getName().equals("")){
+        if(name == null || name.equals("")){
             InvalidFieldHandler.printMessage("Значение name не может быть пустым(null)");
             isValid = false;
         }
@@ -82,7 +97,7 @@ public class Product implements Comparable<Product> {
     }
 
     public void setCreationDate(ZonedDateTime creationDate) {
-        if(this.getCreationDate() == null){
+        if(creationDate == null){
             InvalidFieldHandler.printMessage("Значение creationDate не может быть null");
             isValid = false;
         }
@@ -94,7 +109,7 @@ public class Product implements Comparable<Product> {
     }
 
     public void setPrice(long price) {
-        if(this.getPrice() <= 0){
+        if(price <= 0){
             InvalidFieldHandler.printMessage("Значение price должно быть больше нуля");
             isValid = false;
         }
