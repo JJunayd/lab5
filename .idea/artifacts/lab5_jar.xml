@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="lab5:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/lab5_jar</output-path>
+    <root id="archive" name="lab5.jar">
+      <element id="module-output" name="lab5" />
+      <element id="module-output" name="info-module" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
