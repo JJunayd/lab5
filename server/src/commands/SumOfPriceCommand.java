@@ -6,7 +6,7 @@ package commands;
 import manager.CollectionManager;
 import products.Product;
 
-import java.util.Iterator;
+
 
 public class SumOfPriceCommand extends NoArgCommand{
     {type = CommandType.SUM_OF_PRICE;}

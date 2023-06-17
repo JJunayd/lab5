@@ -3,13 +3,12 @@
  */
 
 
+import authorization.User;
 import products.*;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;
 import java.util.Scanner;
-
-import java.time.ZonedDateTime;
 
 public class NewElement {
     private static final Scanner productInput = new Scanner(System.in);
@@ -19,19 +18,36 @@ public class NewElement {
             try {
                 String argument = productInput.nextLine().trim();
                 try {
+                    if(argument.equals("")){
+                        throw new RuntimeException("Поле не может быть пустым");
+                    }
                     if (dataType == String.class) {
-                        return (T) Objects.requireNonNull(argument);
+                        if(message.equals("Введите зипкод: ") && argument.length()>18){
+                            throw new RuntimeException("Длина поля не должна превышать 18 символов");
+                        }
+                        else {
+                            return (T) Objects.requireNonNull(argument);
+                        }
                     } else if (dataType == Double.class) {
                         return dataType.cast(Double.parseDouble(Objects.requireNonNull(argument)));
                     } else if (dataType == Integer.class) {
                         return dataType.cast(Integer.parseInt(Objects.requireNonNull(argument)));
                     } else if (dataType == Long.class) {
-                        return dataType.cast(Long.parseLong(Objects.requireNonNull(argument)));
+                        T result = dataType.cast(Long.parseLong(Objects.requireNonNull(argument)));
+                        if((long)result>0) {
+                            return result;
+                        }
+                        else{throw new NumberFormatException("Значение поля должно быть больше нуля");}
                     } else if (dataType == Float.class) {
-                        return dataType.cast(Float.parseFloat(Objects.requireNonNull(argument.replace(",", "."))));
+                        T result = dataType.cast(Float.parseFloat(Objects.requireNonNull(argument.replace(",", "."))));
+                        if((float)result<=570) {
+                            return result;
+                        }
+                        else{throw new RuntimeException("Значение поля не может превышать 570");}
                     }
                 } catch (RuntimeException e) {
                     System.out.println("Поле введено некорректно");
+                    System.out.println(e.getMessage());
                 }
             }
             catch(NoSuchElementException e){
@@ -77,7 +93,8 @@ public class NewElement {
         Address address = new Address(street, zipCode);
         Organization man = new Organization(orgName, employeesCount, type, address);
         Coordinates coord = new Coordinates(x, y);
-        Product product = new Product(name, coord, ZonedDateTime.now(), price, unitOfMeasure, man);
+        Product product = new Product(name, coord, price, unitOfMeasure, man);
+        product.setCreator(User.current());
         if(product.isValid){
             return product;
         }

@@ -1,11 +1,9 @@
 package commands;
 
-import products.Product;
 
 import java.io.Serializable;
 
 public abstract class Command implements Serializable {
-    protected static String scriptNotice = "СКРИПТ";
     CommandType type;
     public Command(CommandType type){
         this.type = type;
@@ -25,5 +23,13 @@ public abstract class Command implements Serializable {
     }
     public void setMessage(String message){
         this.message = message;
+    }
+    private String user;
+    public void setUser(String user){
+        this.user = user;
+    }
+
+    public String getUser() {
+        return this.user;
     }
 }

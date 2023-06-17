@@ -14,26 +14,38 @@ import messenger.InvalidFieldHandler;
 import parser.ProductConverter;
 
 import java.io.Serializable;
-import java.time.ZonedDateTime;
+
+import java.util.Date;
+
 public class Product implements Comparable<Product>, Serializable {
     private Long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
-    private ZonedDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private Date creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     private long price; //Значение поля должно быть больше 0
-    private UnitOfMeasure unitOfMeasure; //Поле может быть null
+    private UnitOfMeasure unitOfMeasure; //Поле не может быть null
     private Organization manufacturer; //Поле не может быть null
+    private String creator;
 
     public boolean isValid = true;
-    public Product(String name, Coordinates coordinates, ZonedDateTime creationDate, long price, UnitOfMeasure unitOfMeasure, Organization manufacturer){
-        updateId();
+    public Product(Long id, String name, Coordinates coordinates, Date creationDate, long price, UnitOfMeasure unitOfMeasure, Organization manufacturer, String creator){
+        setId(id);
         setName(name);
         setCoordinates(coordinates);
         setCreationDate(creationDate);
         setPrice(price);
         setUnitOfMeasure(unitOfMeasure);
         setManufacturer(manufacturer);
+        setCreator(creator);
     }
+    public Product(String name, Coordinates coordinates, long price, UnitOfMeasure unitOfMeasure, Organization manufacturer){
+        setName(name);
+        setCoordinates(coordinates);
+        setPrice(price);
+        setUnitOfMeasure(unitOfMeasure);
+        setManufacturer(manufacturer);
+    }
+
     public void updateId() {
         if(this.id == null){
             this.setId(1);
@@ -42,19 +54,8 @@ public class Product implements Comparable<Product>, Serializable {
             setId(this.id + 1);
         }
     }
-    public void updateOrgId(){
-        this.getManufacturer().updateId();
-    }
     public int compareTo(Product another) {
-        if (this.getPrice() > another.getPrice()) {
-            return 1;
-        }
-        else if(this.getPrice() == another.getPrice()){
-            return 0;
-        }
-        else{
-            return -1;
-        }
+        return Long.compare(this.getPrice(), another.getPrice());
     }
     @Override
     public String toString() {
@@ -93,18 +94,18 @@ public class Product implements Comparable<Product>, Serializable {
             InvalidFieldHandler.printMessage("Значение coordinates не может быть null");
             isValid = false;
         }
-        if(!coordinates.isValid){
+        else if(!coordinates.isValid){
             InvalidFieldHandler.printMessage("Нарушен контракт класса Coordinates");
             isValid = false;
         }
         else{this.coordinates = coordinates;}
     }
 
-    public ZonedDateTime getCreationDate() {
+    public Date getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(ZonedDateTime creationDate) {
+    public void setCreationDate(Date creationDate) {
         if(creationDate == null){
             InvalidFieldHandler.printMessage("Значение creationDate не может быть null");
             isValid = false;
@@ -145,10 +146,19 @@ public class Product implements Comparable<Product>, Serializable {
     public boolean equals(Object obj) {
         try {
             Product product = (Product) obj;
-            return this.getName().equals(product.getName()) && this.getManufacturer().getOfficialAddress().getStreet().equals(product.getManufacturer().getOfficialAddress().getStreet()) && this.getManufacturer().getOfficialAddress().getZipCode().equals(product.getManufacturer().getOfficialAddress().getZipCode()) && this.getManufacturer().getType().equals(product.getManufacturer().getType()) && this.getManufacturer().getEmployeesCount() == product.getManufacturer().getEmployeesCount() && this.getManufacturer().getName().equals(product.getManufacturer().getName()) && this.getCoordinates().getX().equals(product.getCoordinates().getX()) && this.getCoordinates().getY().equals(product.getCoordinates().getY()) && this.getUnitOfMeasure().equals(product.getUnitOfMeasure());
+            return this.getName().equals(product.getName()) && this.getManufacturer().getOfficialAddress().getStreet().equals(product.getManufacturer().getOfficialAddress().getStreet()) && this.getManufacturer().getOfficialAddress().getZipCode().equals(product.getManufacturer().getOfficialAddress().getZipCode()) && this.getManufacturer().getType().equals(product.getManufacturer().getType()) && this.getManufacturer().getEmployeesCount() == product.getManufacturer().getEmployeesCount() && this.getManufacturer().getName().equals(product.getManufacturer().getName()) && this.getCoordinates().getX().equals(product.getCoordinates().getX()) && this.getCoordinates().getY().equals(product.getCoordinates().getY()) && this.getUnitOfMeasure().equals(product.getUnitOfMeasure()) && this.getCreator().equals(product.getCreator());
         }
         catch(ClassCastException e){
             return false;
         }
+    }
+
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
     }
 }

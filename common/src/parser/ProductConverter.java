@@ -7,7 +7,8 @@ import products.*;
 import com.google.gson.*;
 
 import java.lang.reflect.Type;
-import java.time.ZonedDateTime;
+import java.time.Instant;
+import java.util.Date;
 
 public class ProductConverter implements JsonSerializer<Product>, JsonDeserializer<Product>  {
     public JsonElement serialize(Product product, Type type,
@@ -17,6 +18,7 @@ public class ProductConverter implements JsonSerializer<Product>, JsonDeserializ
         jsonProduct.addProperty("name", product.getName());
         jsonProduct.addProperty("creationTime", product.getCreationDate().toString());
         jsonProduct.addProperty("price", product.getPrice());
+        jsonProduct.addProperty("creator", product.getCreator());
         try {
             jsonProduct.addProperty("unitOfMeasure", product.getUnitOfMeasure().toString());
         }
@@ -101,12 +103,7 @@ public class ProductConverter implements JsonSerializer<Product>, JsonDeserializ
 
             String name = getAsOptString(object, "name");
 
-            ZonedDateTime creationDate;
-            try {
-                creationDate = ZonedDateTime.parse(object.get("creationTime").getAsString());
-            } catch (NullPointerException e) {
-                creationDate = ZonedDateTime.now();
-            }
+            Date creationDate = Date.from(Instant.now());
             long price = getAsOptLong(object, "price");
             UnitOfMeasure unitOfMeasure = null;
             try {
@@ -115,8 +112,8 @@ public class ProductConverter implements JsonSerializer<Product>, JsonDeserializ
                 System.out.println("Некорректное значение unitOfMeasure");
             } catch (NullPointerException e) { //потому что может быть null
             }
-            Product product = new Product(name, coord, creationDate, price, unitOfMeasure, man);
-
+            Product product = new Product(name, coord, price, unitOfMeasure, man);
+            product.setCreationDate(creationDate);
             if (object.get("id") != null) {
                 long id = object.get("id").getAsLong();
                 product.setId(id);

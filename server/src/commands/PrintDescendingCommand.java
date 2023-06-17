@@ -5,10 +5,8 @@ package commands;
 
 
 import manager.CollectionManager;
-import products.Product;
 
 import java.util.Collections;
-import java.util.PriorityQueue;
 
 public class PrintDescendingCommand extends NoArgCommand{
     {type = CommandType.PRINT_DESCENDING;}

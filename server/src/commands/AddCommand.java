@@ -4,7 +4,7 @@
 package commands;
 
 import manager.CollectionManager;
-import products.Product;
+import manager.DatabaseManager;
 
 import static commands.CommandType.ADD;
 
@@ -16,8 +16,14 @@ public class AddCommand extends ElementCommand{
         Command result = new ElementCommand();
         try {
             if (element.isValid) {
-                CollectionManager.add(element);
-                result.setMessage("Элемент добавлен\n");
+                if(DatabaseManager.addToDatabase(element)){
+                    CollectionManager.clear();
+                    DatabaseManager.loadCollection();
+                    result.setMessage("Элемент добавлен\n");
+                }
+                else{
+                    result.setMessage("Не удалось добавить элемент\n");
+                }
                 return result;
             }
             else {
@@ -25,6 +31,7 @@ public class AddCommand extends ElementCommand{
             }
         }
         catch(NullPointerException e){
+            e.printStackTrace();
             result.setMessage("Нарушен контракт\n");
             return result;
         }

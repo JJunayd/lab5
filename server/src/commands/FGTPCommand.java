@@ -5,12 +5,6 @@ package commands;
 
 
 import manager.CollectionManager;
-import products.Product;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.stream.Stream;
-
 import static commands.CommandType.FILTER_GREATER_THAN_PRICE;
 
 public class FGTPCommand extends StringArgCommand{

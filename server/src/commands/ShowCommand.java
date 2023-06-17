@@ -13,7 +13,7 @@ public class ShowCommand extends NoArgCommand{
         Command result = new NoArgCommand();
         StringBuilder response = new StringBuilder();
         if(CollectionManager.getCollectionSize() != 0) {
-            CollectionManager.collection.stream().forEachOrdered(Product->response.append(Product).append("\n"));
+            CollectionManager.collection.forEach(Product->response.append(Product).append("\n"));
         }
         else{
             response.append("Коллекция пуста.\n");

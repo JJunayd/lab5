@@ -16,16 +16,22 @@ public class Organization implements Serializable {
     private Long orgId; //Поле не может быть null, Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String orgName; //Поле не может быть null, Строка не может быть пустой
     private long employeesCount; //Значение поля должно быть больше 0
-    private OrganizationType type; //Поле может быть null
+    private OrganizationType type; //Поле не может быть null
     private Address officialAddress; //Поле не может быть null
     public boolean isValid = true;
 
-    public Organization(String orgName, long employeesCount, OrganizationType type, Address officialAddress) {
-            updateId();
+    public Organization(Long orgId, String orgName, long employeesCount, OrganizationType type, Address officialAddress) {
+            setOrgId(orgId);
             setName(orgName);
             setEmployeesCount(employeesCount);
             setType(type);
             setOfficialAddress(officialAddress);
+    }
+    public Organization(String orgName, long employeesCount, OrganizationType type, Address officialAddress) {
+        setName(orgName);
+        setEmployeesCount(employeesCount);
+        setType(type);
+        setOfficialAddress(officialAddress);
     }
 
     public void updateId() {

@@ -1,39 +1,25 @@
-/**
- * Команда, обновляющая идентификатор заданного элемента коллекции
- */
 package commands;
 
 import manager.CollectionManager;
-import products.Product;
 
-import java.util.Iterator;
-
-public class UpdateIdCommand extends ElementCommand{
-    {type = CommandType.UPDATE_ID;}
-    public UpdateIdCommand(){
-
-    }
-    @Override
-    public Command execute() {
-        Command result = new ElementCommand();
-        try {
-            if (element.isValid) {
-                if (CollectionManager.collection.stream().
-                        noneMatch(p -> p.equals(element))) {
-                    result.setMessage("Элемент не найден\n");
-                } else {
-                    CollectionManager.collection.stream().
-                            filter(p -> p.equals(element)).
-                            forEach(Product::updateId);
-                    result.setMessage("Элемент обновлен\n");
-                }
-                return result;
-            }
-            else{return null;}
+public class UpdateIdCommand extends StringArgCommand{
+        {type = CommandType.UPDATE_ID;}
+        public UpdateIdCommand(){
         }
-        catch(NullPointerException e){
-            result.setMessage("Нарушен контракт\n");
+        @Override
+        public Command execute() {
+            StringArgCommand result = new StringArgCommand();
+                if(CollectionManager.collection.stream().
+                        noneMatch(p -> p.getId() == Long.parseLong(this.argument))) {
+                    result.setMessage("Элемент не найден\n");
+                }
+                else if(CollectionManager.collection.stream().
+                        noneMatch(p -> p.getId() == Long.parseLong(this.argument) && p.getCreator().equals(this.getUser()))) {
+                    result.setMessage("У Вас нет прав на обновление этого элемента\n");
+                }
+                else{
+                    result.setMessage(this.argument);
+                }
             return result;
         }
     }
-}

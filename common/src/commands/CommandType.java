@@ -12,11 +12,15 @@ public enum CommandType {
     ADD("add"),
     ADD_IF_MIN("add_if_min"),
     REMOVE_BY_ID("remove_by_id"),
+    UPDATE_TASK("update_task"),
     UPDATE_ID("update_id"),
     EXECUTE_SCRIPT("execute_script"),
     REMOVE_LOWER("remove_lower"),
     FILTER_GREATER_THAN_PRICE("filter_greater_than_price"),
-    SAVE("save");
+    SAVE("save"),
+    LOGIN("login"),
+    REGISTER("register"),
+    LOGOUT("logout");
     private final String name;
     CommandType(String name) {
         this.name = name;

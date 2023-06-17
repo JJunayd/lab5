@@ -10,12 +10,24 @@ import messenger.InvalidFieldHandler;
 import java.io.Serializable;
 
 public class Address implements Serializable {
+    private long id;
     private String street; //Поле не может быть null
     private String zipCode; //Длина строки не должна быть больше 18, Поле не может быть null
     public boolean isValid = true;
+    public Address(Long id, String street, String zipCode){
+        setId(id);
+        setStreet(street);
+        setZipCode(zipCode);
+    }
     public Address(String street, String zipCode){
         setStreet(street);
         setZipCode(zipCode);
+    }
+    public void setId(long id){
+        this.id = id;
+    }
+    public Long getId(){
+        return this.id;
     }
     public String getStreet() {
         return street;

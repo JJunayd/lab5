@@ -10,15 +10,27 @@ import messenger.InvalidFieldHandler;
 import java.io.Serializable;
 
 public class Coordinates implements Serializable {
+    private long id;
     private Float x; //Максимальное значение поля: 570, Поле не может быть null
     private Integer y; //Поле не может быть null
     public boolean isValid = true;
     public Float getX(){
         return this.x;
     }
+    public Coordinates(long id, float x, int y){
+        setId(id);
+        setX(x);
+        setY(y);
+    }
     public Coordinates(float x, int y){
         setX(x);
         setY(y);
+    }
+    public void setId(long id){
+        this.id = id;
+    }
+    public Long getId() {
+        return this.id;
     }
     public Integer getY() {
         return y;

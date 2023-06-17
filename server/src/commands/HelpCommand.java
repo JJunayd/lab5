@@ -23,6 +23,8 @@ public class HelpCommand extends NoArgCommand{
                 sum_of_price : вывести сумму значений поля price для всех элементов коллекции
                 filter_greater_than_price price : вывести элементы, значение поля price которых больше заданного
                 print_descending : вывести элементы коллекции в порядке убывания
+                login: авторизоваться в системе
+                register: зарегистрировать нового пользователя
                 """;
     @Override
     public Command execute() {

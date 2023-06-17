@@ -4,9 +4,7 @@
 package commands;
 
 import manager.CollectionManager;
-import products.Product;
-
-import static commands.CommandType.ADD;
+import manager.DatabaseManager;
 import static commands.CommandType.ADD_IF_MIN;
 
 public class AddIfMinCommand extends ElementCommand{
@@ -19,8 +17,11 @@ public class AddIfMinCommand extends ElementCommand{
         try {
             if (element.isValid) {
                 if (element.compareTo(CollectionManager.head()) < 0) {
-                    CollectionManager.add(element);
-                    result.setMessage("Элемент добавлен\n");
+                    if(DatabaseManager.addToDatabase(element)) {
+                        CollectionManager.clear();
+                        DatabaseManager.loadCollection();
+                        result.setMessage("Элемент добавлен\n");
+                    }
                 } else {
                     result.setMessage("Элемент не добавлен\n");
                 }
